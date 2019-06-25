@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Календарь</title>
+    <link href="style.css" rel="stylesheet">
+    <script src="jQuery.js"></script>
+    <script>
+        // Заполняем таблицу месяцов заголовками столбцов
+        function day_title(day_name) {
+            document.write("<div class='c-cal__col'>" + day_name + "</div>");
+        }
+        // Заполняем таблицу месяцов числами
+        function fill_table(month, month_length, indexMonth) {
+            day = 1;
+            // начинаем новую таблицу месяцов
+            document.write("<div class='c-main c-main-" + indexMonth + "'>");
+            document.write("<b>"+month+" "+year+"</b>")
+
+            // Заголовки столбцов
+            document.write("<div class='c-cal__row'>");
+            day_title("Пон");
+            day_title("Вт");
+            day_title("Ср");
+            day_title("Чт");
+            day_title("Пт");
+            day_title("Сб");
+            day_title("Вс");
+            document.write("</div>");
+
+            // пустые ячейки до первого дня месяца
+            document.write("<div class='c-cal__row'>");
+            for (var i = 1; i < start_day; i++) {
+                if (start_day > 7) {
+                } else {
+                    document.write("<div class='c-cal__cel'></div>");
+                }
+            }
+
+            // Заполняем первую неделю
+            for (var i = start_day; i < 8; i++) {
+                document.write(
+                    "<div data-day='2019-" +
+                    indexMonth +
+                    "-0" +
+                    day +
+                    "'class='c-cal__cel'><p>" +
+                    day +
+                    "</p></div>"
+                );
+                day++;
+            }
+            document.write("</div>");
+
+            // Заполняем оставшиеся недели
+            while (day <= month_length) {
+                document.write("<div class='c-cal__row'>");
+                for (var i = 1; i <= 7 && day <= month_length; i++) {
+                    if (day >= 1 && day <= 9) {
+                        document.write(
+                            "<div data-day='2019-" +
+                            indexMonth +
+                            "-0" +
+                            day +
+                            "'class='c-cal__cel'><p>" +
+                            day +
+                            "</p></div>"
+                        );
+                        day++;
+                    } else {
+                        document.write(
+                            "<div data-day='2019-" +
+                            indexMonth +
+                            "-" +
+                            day +
+                            "' class='c-cal__cel'><p>" +
+                            day +
+                            "</p></div>"
+                        );
+                        day++;
+                    }
+                }
+                document.write("</div>");
+                // Первый день след месяца
+                start_day = i;
+            }
+
+            document.write("</div>");
+        }
+    </script>
+    <script src="script.js" async></script>
+</head>
+<body>
+
+<header>
+    <div class="wrapper">
+        <div class="c-monthyear">
+            <div class="c-month">
+                <span id="prev" class="prev fa fa-angle-left" aria-hidden="true"></span>
+                <div id="c-paginator">
+                    <span class="c-paginator__month">ЯНВАРЬ</span>
+                    <span class="c-paginator__month">ФЕВРАЛЬ</span>
+                    <span class="c-paginator__month">МАРТ</span>
+                    <span class="c-paginator__month">АПРЕЛЬ</span>
+                    <span class="c-paginator__month">МАЙ</span>
+                    <span class="c-paginator__month">ИЮНЬ</span>
+                    <span class="c-paginator__month">ИЮЛЬ</span>
+                    <span class="c-paginator__month">АВГУСТ</span>
+                    <span class="c-paginator__month">СЕНТЯБРЬ</span>
+                    <span class="c-paginator__month">ОКТЯБРЬ</span>
+                    <span class="c-paginator__month">НОЯБРЬ</span>
+                    <span class="c-paginator__month">ДЕКАБРЬ</span>
+                </div>
+                <span id="next" class="next fa fa-angle-right" aria-hidden="true"></span>
+            </div>
+            <span class="c-paginator__year">2019</span>
+        </div>
+        <div class="c-sort">
+            <a class="o-btn c-today__btn" href="javascript:;">ТЕКУЩИЙ МЕСЯЦ</a>
+        </div>
+    </div>
+</header>
+<div class="wrapper">
+    <div class="c-calendar">
+        <div class="c-calendar__style c-aside">
+            <a class="c-add o-btn js-event__add" href="javascript:">ДОБАВИТЬ СОБЫТИЕ <span class="fa fa-plus"></span></a>
+            <div class="c-aside__day">
+                <span class="c-aside__num"></span> <span class="c-aside__month"></span>
+            </div>
+            <div class="c-aside__eventList">
+            </div>
+        </div>
+        <div class="c-cal__container c-calendar__style">
+            <script>
+                year = 2019;
+
+                // Первый день недели нового года
+                today = new Date("Июнь" + year);
+                start_day = today.getDay();
+                fill_table("Январь", 31, "01");
+                fill_table("Февраль", 28, "02");
+                fill_table("Март", 31, "03");
+                fill_table("Апрель", 30, "04");
+                fill_table("Май", 31, "05");
+                fill_table("Июнь", 30, "06");
+                fill_table("Июль", 31, "07");
+                fill_table("Август", 31, "08");
+                fill_table("Сентябрь", 30, "09");
+                fill_table("Октябрь", 31, "10");
+                fill_table("Ноябрь", 30, "11");
+                fill_table("Декабрь", 31, "12");
+            </script>
+        </div>
+    </div>
+
+    <div class="c-event__creator c-calendar__style js-event__creator">
+        <a href="javascript:;" class="o-btn js-event__close">ЗАКРЫТЬ <span class="fa fa-close"></span></a>
+        <form id="addEvent">
+            <input placeholder="Event name" type="text" name="name">
+            <input type="date" name="date">
+            <textarea placeholder="Notes" name="notes" cols="30" rows="10"></textarea>
+            <select name="tags">
+                <option value="event">Событие</option>
+                <option value="important">ВАЖНО</option>
+                <option value="birthday">День Рождения!</option>
+            </select>
+        </form>
+        <br>
+        <a href="javascript:" class="o-btn js-event__save">СОХРАНИТЬ <span class="fa fa-save"></span></a>
+    </div>
+</div>
+
+</body>
+</html>
